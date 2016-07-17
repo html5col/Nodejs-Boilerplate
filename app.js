@@ -1,8 +1,7 @@
 "use strict";
 var express = require('express');
 var bodyParser = require('body-parser');//to get the info of the form submit , you need to use req.body, which must require the body-parser middleware first
-
-
+var controllers = require('./controllers/mainController.js');
 
 var app = express();
 app.set('port',process.env.PORT || 8000);
@@ -26,7 +25,6 @@ app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
 //static中间件可以将一个或多个目录指派为包含静态资源的目录,其中资源不经过任何特殊处理直接发送到客户端,如可放img,css。 设置成功后可以直接指向、img/logo.png,static中间件会返回这个文件并正确设定内容类型
 
-let fortuneLib = require(__dirname + '/lib/fortune.js');
 
 app.use(function(req,res,next){
     res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
@@ -47,25 +45,15 @@ app.use(function(req,res,next){
 
 
 
-app.get('/', function(req,res){
-    res.render('home/home', {fortune: fortuneLib.getFortune() || 'There exist errors'});
-});
+app.get('/', controllers.index);
 
 
-app.get('/about', function(req,res){
-    res.render('home/about',{
-        pageTestScript: '/js/page-test/tests-about.js'//know which test file to be used in this route
-    });
-});
+app.get('/about', controllers.about);
 //donot need to add views
 
-app.get('/cross-browser/hood-river',function(req,res){
-    res.render('cross-browser-test/hood-river');
-});
+app.get('/cross-browser/hood-river',controllers.hood_river);
 
-app.get('/cross-browser/request-group-rate',function(req,res){
-    res.render('cross-browser-test/request-group-rate');
-});
+app.get('/cross-browser/request-group-rate',controllers.request_group_rate);
 
 // app.get('/process-contact', function(req,res){
 //     console.log('Received contact from ' + req.body.name + " <" + req.body.email + '>');
