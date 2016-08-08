@@ -1,6 +1,5 @@
 //run :  mocha -u tdd -R spec public/js/cross-test/tests-crosspage.js 2>/dev/null
 //this file does not need to be put in a html file
-(function(){}(
     "use strict";
     var Browser = require('zombie'),
         assert = require('chai').assert;
@@ -40,5 +39,3 @@
         });
 
     });
-
-));
